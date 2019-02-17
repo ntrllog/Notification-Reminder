@@ -28,17 +28,17 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
             public void onClick(View view) {
                 EditText content = findViewById(R.id.dialog_content);
                 String s = content.getText().toString();
-                if( mDialogResult != null ){
+                if(mDialogResult != null){
                     mDialogResult.finish(s);
                 }
                 dismiss();
             }
         });
+
     }
 
     @Override
     public void onClick(View v) {
-        return;
     }
 
     public void setDialogResult(OnMyDialogResult dialogResult){

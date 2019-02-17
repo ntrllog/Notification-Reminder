@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     final ArrayList<Notification> notifications = new ArrayList<>();
+    int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void finish(String result) {
                         n.setContent(result);
+                        sendNotification(result, n.getId());
                     }
                 });
                 c.show();
@@ -67,29 +69,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void sendNotification(View view) {
+    private void sendNotification(String s, int i) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "ID")
                 .setSmallIcon(R.drawable.icons8_android_512)
-                .setContentTitle("Title")
-                .setContentText("Content")
+                .setContentTitle("Notification Reminder")
+                .setContentText(s)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
         // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(942, mBuilder.build());
+        notificationManager.notify(i, mBuilder.build());
     }
 
     @Override
-    public boolean onCreateOptionsMenu (Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate (R.menu.create, menu);
+        inflater.inflate(R.menu.create, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected (MenuItem item) {
-        notifications.add(new Notification("Content"));
+    public boolean onOptionsItemSelected(MenuItem item) {
+        notifications.add(new Notification("A", id++));
         updateAdapter();
         return false;
     }
