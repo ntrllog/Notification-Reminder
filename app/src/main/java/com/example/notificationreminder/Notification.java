@@ -11,4 +11,8 @@ public class Notification {
     public String getContent() {
         return this.content;
     }
+
+    public void setContent(String s) {
+        this.content = s;
+    }
 }

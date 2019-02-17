@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class CustomDialog extends Dialog implements android.view.View.OnClickListener {
+
+    OnMyDialogResult mDialogResult;
 
     public CustomDialog(Activity a) {
         super(a);
@@ -23,6 +26,11 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EditText content = findViewById(R.id.dialog_content);
+                String s = content.getText().toString();
+                if( mDialogResult != null ){
+                    mDialogResult.finish(s);
+                }
                 dismiss();
             }
         });
@@ -31,6 +39,14 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
     @Override
     public void onClick(View v) {
         return;
+    }
+
+    public void setDialogResult(OnMyDialogResult dialogResult){
+        mDialogResult = dialogResult;
+    }
+
+    public interface OnMyDialogResult{
+        void finish(String result);
     }
 
 }

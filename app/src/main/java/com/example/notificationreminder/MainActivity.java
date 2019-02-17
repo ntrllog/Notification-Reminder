@@ -51,11 +51,17 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.list);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener (new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
-                Notification n = notifications.get(position);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Notification n = notifications.get(position);
                 CustomDialog c = new CustomDialog(MainActivity.this);
+                c.setDialogResult(new CustomDialog.OnMyDialogResult() {
+                    @Override
+                    public void finish(String result) {
+                        n.setContent(result);
+                    }
+                });
                 c.show();
             }
         });
