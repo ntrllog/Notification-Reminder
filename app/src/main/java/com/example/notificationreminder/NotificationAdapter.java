@@ -24,9 +24,6 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
         Notification currentNotification = getItem(position);
 
-        TextView title = listItemView.findViewById (R.id.title);
-        title.setText(currentNotification.getTitle());
-
         TextView content = listItemView.findViewById (R.id.content);
         content.setText(currentNotification.getContent());
 

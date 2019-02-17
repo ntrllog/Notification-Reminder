@@ -2,16 +2,10 @@ package com.example.notificationreminder;
 
 public class Notification {
 
-    private String title;
     private String content;
 
-    public Notification(String title, String content) {
-        this.title = title;
+    public Notification(String content) {
         this.content = content;
-    }
-
-    public String getTitle() {
-        return this.title;
     }
 
     public String getContent() {

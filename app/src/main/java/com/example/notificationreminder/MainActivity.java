@@ -11,11 +11,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    final ArrayList<Notification> notifications = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         createNotificationChannel();
 
-        final ArrayList<Notification> notifications = new ArrayList<>();
-        notifications.add(new Notification("Title", "Content"));
-
-        NotificationAdapter adapter = new NotificationAdapter (this, notifications);
-        ListView listView = findViewById (R.id.list);
-        listView.setAdapter (adapter);
+        updateAdapter();
     }
 
     private void createNotificationChannel() {
@@ -46,6 +44,21 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    private void updateAdapter() {
+        NotificationAdapter adapter = new NotificationAdapter(this, notifications);
+        ListView listView = findViewById(R.id.list);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener (new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
+                Notification n = notifications.get(position);
+                CustomDialog c = new CustomDialog(MainActivity.this);
+                c.show();
+            }
+        });
     }
 
     public void sendNotification(View view) {
@@ -70,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected (MenuItem item) {
+        notifications.add(new Notification("Content"));
+        updateAdapter();
         return false;
     }
 
