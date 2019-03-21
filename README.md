@@ -17,6 +17,7 @@ APK available at the ["release"](https://github.com/alan-lam/Notification-Remind
 - Menu
 - Shared Preferences
 - Gson (saving objects to shared preferences)
+- Context Menu (pop-up menu on long hold)
 
 ## Sources
 https://stackoverflow.com/questions/4279787/how-can-i-pass-values-between-a-dialog-and-an-activity
