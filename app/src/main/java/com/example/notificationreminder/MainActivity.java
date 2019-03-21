@@ -2,6 +2,7 @@ package com.example.notificationreminder;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -14,12 +15,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     final ArrayList<Notification> notifications = new ArrayList<>();
+    NotificationAdapter adapter;
     int id = 0;
+    SharedPreferences savedNotifications;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
         createNotificationChannel();
 
+        adapter = new NotificationAdapter(this, notifications);
+        savedNotifications = getSharedPreferences("notifications", MODE_PRIVATE);
+
+        readFromGson();
         updateAdapter();
     }
 
@@ -48,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateAdapter() {
-        NotificationAdapter adapter = new NotificationAdapter(this, notifications);
+
         ListView listView = findViewById(R.id.list);
         listView.setAdapter(adapter);
 
@@ -61,12 +71,29 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void finish(String result) {
                         n.setContent(result);
+                        SharedPreferences.Editor prefsEditor = savedNotifications.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(n);
+                        prefsEditor.putString(""+n.getId(), json);
+                        prefsEditor.apply();
                         sendNotification(result, n.getId());
                     }
                 });
                 c.show();
             }
         });
+    }
+
+    private void readFromGson() {
+        Gson gson = new Gson();
+        Map<String,?> keys = savedNotifications.getAll();
+
+        for (Map.Entry<String,?> entry : keys.entrySet()) {
+            String json = entry.toString().substring(2);
+            Notification n = gson.fromJson(json, Notification.class);
+            notifications.add(n);
+            id = n.getId();
+        }
     }
 
     private void sendNotification(String s, int i) {
@@ -91,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        notifications.add(new Notification("A", id++));
+        notifications.add(new Notification("A", ++id));
         updateAdapter();
         return false;
     }
