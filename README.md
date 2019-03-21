@@ -15,6 +15,10 @@ APK available at the ["release"](https://github.com/alan-lam/Notification-Remind
 - Dialogs
 - Custom Adapter
 - Menu
+- Shared Preferences
+- Gson (saving objects to shared preferences)
 
 ## Sources
 https://stackoverflow.com/questions/4279787/how-can-i-pass-values-between-a-dialog-and-an-activity
+https://stackoverflow.com/questions/5418160/store-and-retrieve-a-class-object-in-shared-preference
+https://stackoverflow.com/questions/9310479/how-to-iterate-through-all-keys-of-shared-preferences
