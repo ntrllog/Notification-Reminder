@@ -22,4 +22,9 @@ public class Notification {
         return this.id;
     }
 
+    @Override
+    public String toString() {
+        return this.getId() + ": " + this.getContent();
+    }
+
 }

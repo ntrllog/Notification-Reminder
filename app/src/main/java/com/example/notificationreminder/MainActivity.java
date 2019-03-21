@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     final ArrayList<Notification> notifications = new ArrayList<>();
     NotificationAdapter adapter;
+    ListView listView;
     int id = 0;
     SharedPreferences savedNotifications;
 
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new NotificationAdapter(this, notifications);
         savedNotifications = getSharedPreferences("notifications", MODE_PRIVATE);
+        listView = findViewById(R.id.list);
+
+        registerForContextMenu(listView);
 
         readFromGson();
         updateAdapter();
@@ -58,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateAdapter() {
-
-        ListView listView = findViewById(R.id.list);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,11 +75,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void finish(String result) {
                         n.setContent(result);
+
+                        /* Save to Shared Preferences */
                         SharedPreferences.Editor prefsEditor = savedNotifications.edit();
                         Gson gson = new Gson();
                         String json = gson.toJson(n);
                         prefsEditor.putString(""+n.getId(), json);
                         prefsEditor.apply();
+
                         sendNotification(result, n.getId());
                     }
                 });
@@ -88,11 +95,12 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Map<String,?> keys = savedNotifications.getAll();
 
+        /* Loop through existing Notifications to load when app starts */
         for (Map.Entry<String,?> entry : keys.entrySet()) {
             String json = entry.toString().substring(2);
             Notification n = gson.fromJson(json, Notification.class);
             notifications.add(n);
-            id = n.getId();
+            id = n.getId(); // keep track of last item's id
         }
     }
 
@@ -101,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.icons8_android_512)
                 .setContentTitle("Notification Reminder")
                 .setContentText(s)
+                .setOngoing(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -118,9 +127,41 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        notifications.add(new Notification("A", ++id));
+        notifications.add(new Notification("Hold To Delete", ++id));
         updateAdapter();
         return false;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Context Menu");
+        menu.add(0, v.getId(), 0, "Delete");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        /* Remove from Shared Preferences */
+        Notification n = notifications.get(info.position);
+        Gson gson = new Gson();
+        String json = gson.toJson(n);
+        SharedPreferences.Editor prefsEditor = savedNotifications.edit();
+        prefsEditor.remove(""+n.getId());
+        prefsEditor.apply();
+
+        /* Remove from notification bar */
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.cancel(n.getId());
+
+        /* Remove from ArrayList (to remove from ListView) */
+        notifications.remove(info.position);
+        updateAdapter();
+
+        return true;
     }
 
 }
