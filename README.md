@@ -6,9 +6,12 @@ APK available at the ["release"](https://github.com/alan-lam/Notification-Remind
 
 ## Screenshots
 ![Alt text](/pictures/home.png?raw=true)
+![Alt text](/pictures/add.png?raw=true)
 ![Alt text](/pictures/edit.png?raw=true)
-![Alt text](/pictures/after.png?raw=true)
-![Alt text](/pictures/notification.png?raw=true)
+![Alt text](/pictures/created.png?raw=true)
+![Alt text](/pictures/notification_bar.png?raw=true)
+![Alt text](/pictures/lock_screen.png?raw=true)
+![Alt text](/pictures/delete.png?raw=true)
 
 ## Concepts
 - Notifications
