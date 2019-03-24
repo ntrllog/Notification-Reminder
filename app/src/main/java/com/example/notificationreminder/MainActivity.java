@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     final ArrayList<Notification> notifications = new ArrayList<>();
     NotificationAdapter adapter;
     ListView listView;
-    int id = 0;
+    int id = 0; // for saving unique Notifications to Shared Preferences
     SharedPreferences savedNotifications;
 
     @Override
@@ -147,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
         /* Remove from Shared Preferences */
         Notification n = notifications.get(info.position);
-        Gson gson = new Gson();
-        String json = gson.toJson(n);
         SharedPreferences.Editor prefsEditor = savedNotifications.edit();
         prefsEditor.remove(""+n.getId());
         prefsEditor.apply();
