@@ -22,7 +22,7 @@ APK available at the ["release"](https://github.com/alan-lam/Notification-Remind
 - Gson (saving objects to shared preferences)
 - Context Menu (pop-up menu on long hold)
 
-## Sources
+## Resources
 https://stackoverflow.com/questions/4279787/how-can-i-pass-values-between-a-dialog-and-an-activity
 https://stackoverflow.com/questions/5418160/store-and-retrieve-a-class-object-in-shared-preference
 https://stackoverflow.com/questions/9310479/how-to-iterate-through-all-keys-of-shared-preferences
