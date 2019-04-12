@@ -2,13 +2,15 @@ package com.example.notificationreminder;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         readFromGson();
         updateAdapter();
+
     }
 
     private void createNotificationChannel() {
@@ -105,16 +108,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendNotification(String s, int i) {
+        /* Create intent so app opens when tapping noticiation*/
+        // Create an Intent for the activity you want to start
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        // Create the TaskStackBuilder and add the intent, which inflates the back stack
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        // Get the PendingIntent containing the entire back stack
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        /* Create actual notication */
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "ID")
                 .setSmallIcon(R.drawable.icons8_android_512)
                 .setContentTitle("Notification Reminder")
                 .setContentText(s)
                 .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(resultPendingIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        // notificationId is a unique int for each notification that you must define
         notificationManager.notify(i, mBuilder.build());
     }
 
@@ -127,14 +139,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        notifications.add(new Notification("Hold To Delete", ++id));
+        notifications.add(new Notification("Tap To Edit/Hold To Delete", ++id));
         updateAdapter();
         return false;
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle("Context Menu");
         menu.add(0, v.getId(), 0, "Delete");
@@ -142,8 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         /* Remove from Shared Preferences */
         Notification n = notifications.get(info.position);
