@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class NotificationAdapter extends ArrayAdapter<Notification> {
 
-    public NotificationAdapter(Activity context, ArrayList<Notification> notifications) {
+    NotificationAdapter(Activity context, ArrayList<Notification> notifications) {
         super(context, 0, notifications);
     }
 

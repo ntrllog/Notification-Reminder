@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     int id = 0; // for saving unique Notifications to Shared Preferences
     SharedPreferences savedNotifications;
+    SharedPreferences idList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new NotificationAdapter(this, notifications);
         savedNotifications = getSharedPreferences("notifications", MODE_PRIVATE);
+        idList = getSharedPreferences("id", MODE_PRIVATE);
         listView = findViewById(R.id.list);
 
         registerForContextMenu(listView);
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Notification n = notifications.get(position);
-                CustomDialog c = new CustomDialog(MainActivity.this);
+                CustomDialog c = new CustomDialog(MainActivity.this, n.getContent());
                 c.setDialogResult(new CustomDialog.OnMyDialogResult() {
                     @Override
                     public void finish(String result) {
@@ -103,12 +105,11 @@ public class MainActivity extends AppCompatActivity {
             String json = entry.toString().substring(2);
             Notification n = gson.fromJson(json, Notification.class);
             notifications.add(n);
-            id = n.getId(); // keep track of last item's id
         }
     }
 
     private void sendNotification(String s, int i) {
-        /* Create intent so app opens when tapping noticiation*/
+        /* Create intent so app opens when tapping notification*/
         // Create an Intent for the activity you want to start
         Intent resultIntent = new Intent(this, MainActivity.class);
         // Create the TaskStackBuilder and add the intent, which inflates the back stack
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         // Get the PendingIntent containing the entire back stack
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        /* Create actual notication */
+        /* Create actual notification */
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "ID")
                 .setSmallIcon(R.drawable.icons8_android_512)
                 .setContentTitle("Notification Reminder")
@@ -139,7 +140,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        notifications.add(new Notification("Tap To Edit/Hold To Delete", ++id));
+        id = idList.getInt("notification_id_key", 0);
+        notifications.add(new Notification("Tap To Edit/Hold To Delete", id));
+        idList.edit().putInt("notification_id_key", (id+1) % Integer.MAX_VALUE).apply();
         updateAdapter();
         return false;
     }
