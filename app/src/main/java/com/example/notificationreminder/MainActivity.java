@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             String json = entry.toString().substring(2);
             Notification n = gson.fromJson(json, Notification.class);
             notifications.add(n);
+            sendNotification(n.getContent(), n.getId());
         }
     }
 
