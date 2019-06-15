@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Name";
             String description = "Description";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel = new NotificationChannel("ID", name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* Loop through existing Notifications to load when app starts */
         for (Map.Entry<String,?> entry : keys.entrySet()) {
-            String json = entry.toString().substring(2);
+            String json = entry.getValue().toString();
             Notification n = gson.fromJson(json, Notification.class);
             notifications.add(n);
             sendNotification(n.getContent(), n.getId());
@@ -144,14 +144,13 @@ public class MainActivity extends AppCompatActivity {
         id = idList.getInt("notification_id_key", 0);
         notifications.add(new Notification("Tap To Edit/Hold To Delete", id));
         idList.edit().putInt("notification_id_key", (id+1) % Integer.MAX_VALUE).apply();
-        updateAdapter();
+        listView.setAdapter(adapter);
         return false;
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Context Menu");
         menu.add(0, v.getId(), 0, "Delete");
     }
 
@@ -171,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* Remove from ArrayList (to remove from ListView) */
         notifications.remove(info.position);
-        updateAdapter();
+        listView.setAdapter(adapter);
 
         return true;
     }
