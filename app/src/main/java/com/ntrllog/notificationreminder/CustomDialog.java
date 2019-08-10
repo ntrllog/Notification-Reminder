@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -27,8 +26,7 @@ public class CustomDialog extends Dialog implements android.view.View.OnClickLis
         setContentView(R.layout.dialog_create_notification);
         final EditText content = findViewById(R.id.dialog_content);
         content.setText(this.content); // grab notification text and put in in dialog
-        content.setSelectAllOnFocus(true); // highlight text on popup
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); // bring up keyboard automatically
+        content.setSelectAllOnFocus(true); // highlight all text on tap
         content.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES); // auto capitalize first letter
 
         Button enter = findViewById(R.id.dialog_enter);

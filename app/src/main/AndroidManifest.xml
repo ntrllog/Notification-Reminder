@@ -17,6 +17,10 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".NotificationService"
+            android:enabled="true"/>
+
     </application>
 
 </manifest>
