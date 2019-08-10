@@ -1,4 +1,4 @@
-package com.example.notificationreminder;
+package com.ntrllog.notificationreminder;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

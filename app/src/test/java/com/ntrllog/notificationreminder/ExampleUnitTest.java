@@ -1,4 +1,4 @@
-package com.example.notificationreminder;
+package com.ntrllog.notificationreminder;
 
 import org.junit.Test;
 
