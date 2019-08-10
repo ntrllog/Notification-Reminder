@@ -121,11 +121,12 @@ public class MainActivity extends AppCompatActivity {
 
         /* Create actual notification */
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "ID")
-                .setSmallIcon(R.drawable.icons8_android_512)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Notification Reminder")
                 .setContentText(s)
                 .setOngoing(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setGroup(s+i)
                 .setContentIntent(resultPendingIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
