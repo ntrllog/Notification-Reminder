@@ -3,10 +3,9 @@ package com.ntrllog.notificationreminder;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,6 +36,17 @@ public class MainActivity extends AppCompatActivity {
         registerForContextMenu(listView);
 
         updateAdapter();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                id = idList.getInt("notification_id_key", 0);
+                notificationArrayList.add(new Notification("Tap To Edit/Hold To Delete", id));
+                idList.edit().putInt("notification_id_key", (id+1) % Integer.MAX_VALUE).apply();
+                listView.setAdapter(adapter);
+            }
+        });
 
         /* Show notifications in notification bar */
         Intent notificationServiceIntent = new Intent(this, NotificationService.class);
@@ -81,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.create, menu);
@@ -95,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         idList.edit().putInt("notification_id_key", (id+1) % Integer.MAX_VALUE).apply();
         listView.setAdapter(adapter);
         return false;
-    }
+    }*/
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
