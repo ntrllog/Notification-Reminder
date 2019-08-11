@@ -91,22 +91,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.create, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        id = idList.getInt("notification_id_key", 0);
-        notificationArrayList.add(new Notification("Tap To Edit/Hold To Delete", id));
-        idList.edit().putInt("notification_id_key", (id+1) % Integer.MAX_VALUE).apply();
-        listView.setAdapter(adapter);
-        return false;
-    }*/
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
