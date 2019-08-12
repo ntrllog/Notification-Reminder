@@ -8,6 +8,9 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -78,7 +81,7 @@ public class NotificationService extends IntentService {
 
         /* Create notification in notification bar */
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "ID")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_announcement_black_24dp)
                 .setContentTitle("Notification Reminder")
                 .setContentText(s)
                 .setOngoing(true)
