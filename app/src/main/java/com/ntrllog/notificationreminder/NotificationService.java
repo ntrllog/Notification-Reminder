@@ -1,6 +1,5 @@
 package com.ntrllog.notificationreminder;
 
-import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,10 +7,9 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -19,21 +17,18 @@ import com.google.gson.Gson;
 
 import java.util.Map;
 
-public class NotificationService extends IntentService {
+public class NotificationService extends JobIntentService {
     SharedPreferences savedNotifications;
-    SharedPreferences idList;
-
-    public NotificationService() {
-        super("NotificationService");
-    }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
         savedNotifications = getSharedPreferences("notifications", MODE_PRIVATE);
-        idList = getSharedPreferences("id", MODE_PRIVATE);
-
         createNotificationChannel();
         readFromGson();
+    }
+
+    public static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, NotificationService.class, 9, work);
     }
 
     public static void removeNotification(Context context, int id) {

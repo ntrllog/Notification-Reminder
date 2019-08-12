@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* Show notifications in notification bar */
         Intent notificationServiceIntent = new Intent(this, NotificationService.class);
-        this.startService(notificationServiceIntent);
+        NotificationService.enqueueWork(getApplicationContext(), notificationServiceIntent);
     }
 
     private void updateAdapter() {
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
                         /* Show notifications in notification bar */
                         Intent notificationServiceIntent = new Intent(getApplicationContext(), NotificationService.class);
-                        getApplication().startService(notificationServiceIntent);
+                        NotificationService.enqueueWork(getApplicationContext(), notificationServiceIntent);
                     }
                 });
                 c.show();
