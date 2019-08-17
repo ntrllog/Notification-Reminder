@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingStart="16dp"
+        android:textColor="#FFFFFF"
         android:textSize="30sp"/>
 
 </RelativeLayout>

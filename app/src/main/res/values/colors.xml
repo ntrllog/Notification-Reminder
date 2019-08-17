@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6a1b9a</color>
-    <color name="colorPrimaryDark">#38006b</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#5c5c5c</color>
+    <color name="colorPrimaryDark">#121212</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="listViewBackground">#292929</color>
+    <color name="listItemBackground">@color/colorPrimary</color>
+    <color name="purple">#BB86FC</color>
 </resources>
