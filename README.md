@@ -2,7 +2,7 @@
 
 An Android app that creates reminders in the form of notifications
 
-App avaiable on [Google Play Store[(https://play.google.com/store/apps/details?id=com.ntrllog.notificationreminder)
+App avaiable on [Google Play Store](https://play.google.com/store/apps/details?id=com.ntrllog.notificationreminder)
 
 APK available at the ["release"](https://github.com/alan-lam/Notification-Reminder/releases) section
 
